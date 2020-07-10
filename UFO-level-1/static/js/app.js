@@ -2,26 +2,28 @@
 const tableData = data;
 const tbody = d3.select("tbody");
 
+
 function buildTable(data) {
-  tbody.html("");
-  data.forEach((dataRow) => {
-    const row = tbody.append("tr");
-    Object.values(dataRow).forEach((val) => {
-      let cell = row.append("td");
-        cell.text(val);
-      }
-    );
-  });
+    d3.select("tbody").html("");
+    data.forEach((entry) => {
+        var row = d3.select("tbody").append("tr");
+        Object.values(entry).forEach((value) => {
+            var tableData = row.append("td");
+            tableData.text(value);
+        });
+    })
 }
 
-function handleClick() {
-  const date = d3.select("#datetime").property("value");
-  let filteredData = tableData;
-  if (date) {
-    filteredData = filteredData.filter(row => row.datetime === date);
-  }
-  buildTable(filteredData);
+function processClick() {
+    d3.event.preventDefault();
+    var date = d3.select("#datetime").property("value");
+    var filterDateTime = tableData;
+    if (date) {
+        filterDateTime = filterDateTime.filter((row) => row.datetime === date);
+    }
+    appendTable(filterDateTime);
 }
 
 d3.selectAll("#filter-btn").on("click", handleClick);
 buildTable(tableData);
+
