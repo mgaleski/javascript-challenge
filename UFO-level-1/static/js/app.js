@@ -1,29 +1,37 @@
 
-const tableData = data;
-const tbody = d3.select("tbody");
+var tableData = data;
+var tbody = d3.select("tbody");
 
-
-function buildTable(data) {
-    d3.select("tbody").html("");
-    data.forEach((entry) => {
-        var row = d3.select("tbody").append("tr");
-        Object.values(entry).forEach((value) => {
-            var tableData = row.append("td");
-            tableData.text(value);
-        });
-    })
+//build table function
+function createTable(data) {
+  tbody.html("");
+  data.forEach((sighting) => {
+      var row = tbody.append("tr");
+      Object.entries(sighting).forEach(function([key, value]) {
+        console.log(key, value);
+        var cell = row.append("td");
+        cell.text(value);
+    });
+  });
 }
 
-function processClick() {
-    d3.event.preventDefault();
-    var date = d3.select("#datetime").property("value");
-    var filterDateTime = tableData;
-    if (date) {
-        filterDateTime = filterDateTime.filter((row) => row.datetime === date);
-    }
-    appendTable(filterDateTime);
+//function to handle button click
+function buttonClick() {
+  var inputElement = d3.select("#datetime");
+  var inputValue = inputElement.property("value");
+  let filteredData = tableData;
+
+  console.log(inputValue);
+  console.log(tableData);
+
+  if (inputValue) {
+    filteredData = tableData.filter(sightings => sightings.datetime === inputValue);
+}
+console.log(filteredData);
+createTable(filteredData);
 }
 
-d3.selectAll("#filter-btn").on("click", handleClick);
-buildTable(tableData);
 
+var button = d3.select("#filter-btn");
+button.on("click", buttonClick);
+createTable(tableData);
